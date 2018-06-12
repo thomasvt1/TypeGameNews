@@ -8,5 +8,7 @@ def get_feed(selected):
         feed['entries'][x]['summary'] = re.sub('<[^>]+>', '', feed['entries'][x]['summary'])
         feed['entries'][x]['summary'] = feed['entries'][x]['summary'].replace("&nbsp;", " ")
         feed['entries'][x]['summary'] = feed['entries'][x]['summary'].replace("\n", " ")
+        #feed['entries'][x]['summary'] = feed['entries'][x]['summary'].replace("'s a", "sa") # 's avonds
+        #feed['entries'][x]['summary'] = feed['entries'][x]['summary'].replace("'", "")
 
     return feed['entries']

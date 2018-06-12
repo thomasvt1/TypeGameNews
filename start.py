@@ -39,6 +39,7 @@ def start_game(selected):
     batch = pyglet.graphics.Batch()
     text = selected['summary']
     print(text)
+    #text = "Fuck 'hallo"
 
     active_window = Game(text, batch, SCREEN_W, SCREEN_H)
 

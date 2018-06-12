@@ -30,6 +30,18 @@ def coin():
     return
 
 
-t = threading.Thread(target=coin)
-# threads.append(t)
-t.start()
+def error():
+    Sound("resources/sound/error_sound2.wav")
+    return
+
+
+def coin_sound():
+    t = threading.Thread(target=coin)
+    # threads.append(t)
+    t.start()
+
+
+def error_sound():
+    t = threading.Thread(target=error)
+    # threads.append(t)
+    t.start()
