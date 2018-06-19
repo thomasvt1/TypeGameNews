@@ -35,6 +35,7 @@ class Game:
     def __init__(self, text, _batch, SCREEN_W, SCREEN_H):
         global batch
         batch = _batch
+        self.batch = _batch
 
         self.width = SCREEN_W
         self.height = SCREEN_H
@@ -42,7 +43,6 @@ class Game:
         self.shifted = False
         self.finished = False
 
-        #TODO: This text will be obtained by polling RSS feed.
         self.typetext_text = text
         self.typetext = pyglet.text.Label(text=self.typetext_text, y=SCREEN_H/2, batch=batch)
         self.typetext.font_size = 18
@@ -58,6 +58,9 @@ class Game:
                                                   x=SCREEN_W-160, y=SCREEN_H-20, batch=batch)
         self.right_wordsprint = pyglet.text.Label(text="Juist overgetikt: " + str(self.right_words),
                                                   x=SCREEN_W-160, y=SCREEN_H-40, batch=batch)
+        #self.end_screen_right = pyglet.text.Label(text="Juist overgetikt: " + str(self.right_words), x=SCREEN_W-400, y=SCREEN_H-200, batch=batch)
+        #self.end_screen_fault = pyglet.text.Label(text="Fout overgetikt: " + str(self.fault_words), x=SCREEN_W - 400,
+        #                                          y=SCREEN_H - 250, batch=batch)
 
         self.update_screen()
 
@@ -74,7 +77,8 @@ class Game:
     def input(self, symbol):
         if self.finished:
             print('Finished!')
-            return
+            #return "FINISHED"
+            return [self.right_words, self.fault_words]
 
         if symbol is key.LSHIFT:
             self.shifted = True
@@ -124,6 +128,8 @@ class Game:
             sym = '.'
         elif symbol is key.COMMA:
             sym = ','
+        elif symbol is key.MINUS:
+            sym = '-'
         elif symbol is key.APOSTROPHE:
             sym = "'"
         elif 'user_key(de)' in sym:
@@ -156,19 +162,25 @@ class Game:
 
 
     def update_screen(self):
-        #  Copy pasta belown
-        self.typetext.text = self.get_short_string(self.typetext_text)
-        self.typetext.x = self.width / 2 - self.typetext.content_width / 2
+        if self.finished is False:
+            #  Copy pasta belown
+            self.typetext.text = self.get_short_string(self.typetext_text)
+            self.typetext.x = self.width / 2 - self.typetext.content_width / 2
 
-        self.typedtext.text = self.typetext_text[:self.progress]
-        self.typedtext.x = self.typetext.x
-        #self.typedtext.x = self.width / 2 - self.typedtext.content_width / 2
+            self.typedtext.text = self.typetext_text[:self.progress]
+            self.typedtext.x = self.typetext.x
+            #self.typedtext.x = self.width / 2 - self.typedtext.content_width / 2
 
-        self.fault_wordsprint.text = "Fout overgetikt: " + str(self.fault_words)
-        self.right_wordsprint.text = "Juist overgetikt: " + str(self.right_words)
-        #  End copy pasta
+            self.fault_wordsprint.text = "Fout overgetikt: " + str(self.fault_words)
+            self.right_wordsprint.text = "Juist overgetikt: " + str(self.right_words)
+            #  End copy pasta
+        elif self.finished is True:
+            i = 0
+            self.batch = pyglet.graphics.Batch()
 
 
+            #self.end_screen_right.text = "Juist overgetikt: " + str(self.right_words)
+            #self.end_screen_fault.text = "Fout overgetikt: " + str(self.fault_words)
 
     def next_line(self):
         self.typetext_text = self.typetext_text.replace(self.get_short_string(self.typetext_text), "")
@@ -191,6 +203,5 @@ class Game:
                     final += splitter[i] + " "
         return final
 
-
     def finish(self):
-        i = 0#TODO
+        self.finished = True

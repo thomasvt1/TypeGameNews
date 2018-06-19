@@ -3,6 +3,7 @@ import parsefeed
 from menu import Menu
 from game import Game
 from choose import Choose
+from finished import Finished
 
 from pyglet.window import key
 
@@ -39,7 +40,7 @@ def start_game(selected):
     batch = pyglet.graphics.Batch()
     text = selected['summary']
     print(text)
-    #text = "Fuck 'hallo"
+    #text = "Hallo Bryan"
 
     active_window = Game(text, batch, SCREEN_W, SCREEN_H)
 
@@ -51,6 +52,15 @@ def show_stories(selected):
     batch = pyglet.graphics.Batch()
 
     active_window = Choose(feed, batch, SCREEN_W, SCREEN_H)
+
+
+def finished_game(array):
+    global batch, active_window
+
+    # Reset batch for rendering.
+    batch = pyglet.graphics.Batch()
+
+    active_window = Finished(batch, SCREEN_W, SCREEN_H, array)
 
 
 @mainWindow.event
@@ -65,7 +75,14 @@ def on_key_press(symbol, modifiers):
     global active_window
 
     if active_window.__class__ is Game:
+        response = active_window.input(symbol)
+        if response is not None:
+            finished_game(response)
+
+    elif active_window.__class__ is Finished:
         active_window.input(symbol)
+        if symbol is key.ENTER:
+            main_menu()
 
     elif active_window.__class__ is Menu:
         if symbol is key.ENTER:

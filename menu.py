@@ -2,8 +2,7 @@ import pyglet
 from pyglet.window import key
 
 rss_list = {'Jeugdjournaal': 'https://feeds.feedburner.com/jeugdjournaal',
-            'NU.nl': 'http://www.nu.nl/rss/Algemeen',
-            'Slack': 'https://feeds.feedburner.com/jeugdjournaal',
+            'NU.nl': 'http://www.nu.nl/rss/Algemeen'
             }
 
 
